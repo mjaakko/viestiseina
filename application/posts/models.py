@@ -18,7 +18,7 @@ class Post(db.Model):
 	content = db.Column(db.String(3000), nullable=False)
 	replies = db.relationship("Post")
 
-	def __init__(self, user_id, content, reply_to)
+	def __init__(self, user_id, content, reply_to):
 		self.user_id = user_id
 		self.content = content
 		self.parent_id = reply_to
