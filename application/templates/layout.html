@@ -15,6 +15,13 @@
 		<a href="{{ url_for('auth_login') }}">Kirjaudu sisään</a>
 		{% endif %}
 
+
+		<ul>
+			<li><a href="{{ url_for('posts_index') }}">Viestit</a></li>
+			<li><a href="{{ url_for('posts_form') }}">Lähetä uusi viesti</a></li>
+		</ul>
+      
+
 		{% block body %}
 		<p>
 			content
