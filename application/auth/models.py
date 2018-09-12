@@ -5,10 +5,12 @@ class User(db.Model):
 
 	id = db.Column(db.Integer, primary_key=True)
 	name = db.Column(db.String(20), nullable=False)
+	password = db.Column(db.String(50), nullable=False)
 	posts = db.relationship("Post", backref="user", lazy=True)
 
-	def __init__(self, name):
+	def __init__(self, name, password):
 		self.name = name
+		self.password = password
 
 	def get_id(self):
 		return self.id
