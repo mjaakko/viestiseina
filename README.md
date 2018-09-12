@@ -9,3 +9,6 @@ viesteihin.
 rekisteröityminen ei tällä hetkellä ole mahdollista, joten sovellusta 
 täytyy testata paikallisesti ja lisätä paikalliseen SQLite tietokantaan 
 käyttäjä)
+
+* [Tietokantakaavio](docs/tietokantakaavio.png)
+* [Käyttötapaukset](docs/kayttotapaukset.md)
