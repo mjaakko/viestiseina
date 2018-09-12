@@ -1,0 +1,16 @@
+{% extends "layout.html" %}
+  
+{% block body %}
+<form method="POST" action="{{ url_for('posts_update', post_id=post_id) }}">
+	{{ form.content.label }}
+	<br/>
+	{{ form.content }}
+	<br>
+	<ul>
+	{% for error in form.content.errors %}
+		<li>{{ error }}</li>
+	{% endfor %}
+	</ul>
+	<input type="submit" value="Päivitä viesti"/>
+</form>
+{% endblock %}
