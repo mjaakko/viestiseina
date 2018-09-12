@@ -5,9 +5,4 @@ class PostForm(FlaskForm):
     content = TextAreaField("Viestin sisältö", [validators.Length(min=3)])
 
     class Meta:
-        csrf = False	
-
-    def __init__(self):
-
-    def __init__(self, default_content):
-        self.content.data = default_content
+        csrf = False

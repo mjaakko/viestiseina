@@ -16,9 +16,12 @@ def posts_form():
 @app.route("/posts/update/<post_id>/")
 @login_required
 def posts_update_form(post_id):
-    post = Posts.query.get(post_id)
+    post = Post.query.get(post_id)
 
-    return render_template("posts/update.html", form = PostForm(post.content), post_id = post.id)
+    form = PostForm()
+    form.content.data = post.content
+
+    return render_template("posts/update.html", form = form, post_id = post.id)
 
 @app.route("/posts/update/<post_id>/", methods=["POST"])
 @login_required
@@ -28,7 +31,7 @@ def posts_update(post_id):
     if not form.validate():
         return render_template("posts/update.html", form = form, post_id = post_id)
 
-    post = Posts.query.get(post_id)
+    post = Post.query.get(post_id)
     post.content = form.content.data
 
     db.session().commit()
