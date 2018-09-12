@@ -1,5 +1,5 @@
 from application import app
-from flask import render_template, request
+from flask import redirect, render_template, request, url_for
 from application.posts.models import Post
 
 @app.route("/posts", methods=["GET"])
@@ -19,4 +19,4 @@ def posts_create():
     db.session().add(post)
     db.session().commit()
   
-    return "hello world!"
+    return redirect(url_for("tasks_index"))
