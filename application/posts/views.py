@@ -1,5 +1,10 @@
 from application import app
 from flask import render_template, request
+from application.posts.models import Post
+
+@app.route("/posts", methods=["GET"])
+def posts_index():
+    return render_template("posts/list.html", posts = Post.query.all())
 
 @app.route("/posts/new/")
 @login_required
