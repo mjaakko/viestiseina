@@ -6,7 +6,7 @@ class Post(db.Model):
 	parent_id = db.Column(db.Integer, db.ForeignKey("post.id"))
 	create_time = db.Column(db.DateTime, default=db.func.current_timestamp(), nullable=False)
 	modify_time = db.Column(db.DateTime, default=db.func.current_timestamp(), onupdate=db.func.current_timestamp(), nullable=False)
-	user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
+	user_id = db.Column(db.Integer, db.ForeignKey("account.id"), nullable=False)
 	content = db.Column(db.String(3000), nullable=False)
 	replies = db.relationship("Post")
 
