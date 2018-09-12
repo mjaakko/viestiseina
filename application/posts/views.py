@@ -1,5 +1,6 @@
-from application import app
+from application import app, db
 from flask import redirect, render_template, request, url_for
+from flask_login import login_required, current_user
 from application.posts.models import Post
 from application.posts.forms import PostForm
 
