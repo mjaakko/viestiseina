@@ -15,7 +15,7 @@ def posts_form():
 
 @app.route("/posts/update/<post_id>/")
 @login_required
-def posts_update(post_id):
+def posts_update_form(post_id):
     post = Posts.query.get(post_id)
 
     return render_template("posts/update.html", form = PostForm(post.content), post_id = post.id)
