@@ -2,3 +2,4 @@ application/__pycache__
 venv
 viestiseina.db
 application/posts/__pycache__
+application/auth/__pycache__
