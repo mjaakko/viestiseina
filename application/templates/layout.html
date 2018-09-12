@@ -6,6 +6,14 @@
 	</head>
 
 	<body>
+		{% if current_user.is_authenticated %}
+		<p>
+			Kirjautuneena: <b>{{ current_user.name }}</b>
+		</p>
+		{% else %}
+		<a href="{{ url_for('auth_login') }}">Kirjaudu sisään</a>
+		{% endif %}
+
 		{% block body %}
 		<p>
 			content
