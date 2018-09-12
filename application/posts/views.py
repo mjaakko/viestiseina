@@ -26,4 +26,4 @@ def posts_create():
     db.session().add(post)
     db.session().commit()
   
-    return redirect(url_for("tasks_index"))
+    return redirect(url_for("posts_index"))
