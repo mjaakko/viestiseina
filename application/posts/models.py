@@ -1,13 +1,5 @@
 from application import db
 
-class User(db.Model):
-	id = db.Column(db.Integer, primary_key=True)
-	name = db.Column(db.String(20), nullable=False)
-	posts = db.relationship("Post", backref="user", lazy=True)
-
-	def __init__(self, name):
-		self.name = name
-
 class Post(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
 	# Parent id is the id of the post this post is a reply to
