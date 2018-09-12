@@ -1,0 +1,5 @@
+[User|id;name;password]
+[Post|id;content;create_time;modify_time]
+
+[User]1-*[Post]
+[Post]1-*[Post]
