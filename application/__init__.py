@@ -12,4 +12,6 @@ from application import views
 
 from application.posts import models
 
+from application.auth import models 
+
 db.create_all()
