@@ -3,8 +3,11 @@ app = Flask(__name__)
 
 from flask_sqlalchemy import SQLAlchemy
 
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///viestiseina.db"
-app.config["SQLALCHEMY_ECHO"] = True
+if os.environ.get("HEROKU"):
+    app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URL")
+else:
+    app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///viestiseina.db"    
+    app.config["SQLALCHEMY_ECHO"] = True
 
 db = SQLAlchemy(app)
 
@@ -33,7 +36,10 @@ login_manager.login_message = "Kirjaudu sis채채n ennen t채m채n toiminnon k채ytt�
 def load_user(user_id):
     return User.query.get(user_id)
 
-db.create_all()
+try: 
+    db.create_all()
+except:
+    pass
 
 exists = User.query.filter_by(name="demo").first()
 if not exists:
