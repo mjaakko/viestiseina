@@ -1,7 +1,7 @@
 from flask import render_template, request, redirect, url_for
 from flask_login import login_user, logout_user
 
-from application import app
+from application import app, db
 from application.auth.models import User
 from application.auth.forms import LoginForm
 
@@ -25,4 +25,26 @@ def auth_login():
 @app.route("/auth/logout")
 def auth_logout():
     logout_user()
+    return redirect(url_for("index"))    
+
+@app.route("/auth/register", methods = ["GET","POST"])
+def auth_register():
+    if request.method == "GET":
+        return render_template("auth/registerform.html", form = LoginForm())
+
+    form = LoginForm(request.form)
+
+    user_exists = User.query.filter_by(name=form.username.data).first()
+    if user_exists:
+        return render_template("auth/registerform.html", form = form,
+                               error = "Valittu käyttäjänimi on jo käytössä")
+
+    user = User(name=form.username.data, password=form.password.data)
+    db.session.add(user)
+    db.session.commit()
+
+    # Login with newly added user
+    user = User.query.filter_by(name=form.username.data, password=form.password.data).first()
+    login_user(user)
+
     return redirect(url_for("index"))    
