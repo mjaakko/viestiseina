@@ -34,3 +34,9 @@ def load_user(user_id):
     return User.query.get(user_id)
 
 db.create_all()
+
+exists = User.query.filter_by(name="demo").first()
+if not exists:
+    demo = User(name="demo", password="demo")
+    db.session.add(demo)
+    db.session.commit()
