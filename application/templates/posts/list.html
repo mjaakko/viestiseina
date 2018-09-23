@@ -7,7 +7,7 @@
 			<p>{{ post.content }}</p>
 			<b>{{ post.user.name }}</b>
 			{% if current_user.id == post.user_id %}
-			<a href="posts/update/{{ post.id }}">Muokkaa</a>
+			<a href="posts/update/{{ post.id }}">Muokkaa</a> - <a href="posts/delete/{{ post.id }}">Poista</a>
 			{% endif %}
 		</div>
 		{% endfor %}

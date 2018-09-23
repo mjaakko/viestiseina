@@ -38,6 +38,14 @@ def posts_update(post_id):
 
     return redirect(url_for("posts_index"))
 
+@app.route("/posts/delete/<post_id>/")
+@login_required
+def posts_delete(post_id):
+    db.session.query(Post).filter(Post.id==post_id).delete()
+    db.session.commit()
+
+    return redirect(url_for("posts_index"))
+
 @app.route("/posts/", methods=["POST"])
 @login_required
 def posts_create():
