@@ -8,7 +8,7 @@ class Post(db.Model):
 	modify_time = db.Column(db.DateTime, default=db.func.current_timestamp(), onupdate=db.func.current_timestamp(), nullable=False)
 	user_id = db.Column(db.Integer, db.ForeignKey("account.id"), nullable=False)
 	content = db.Column(db.String(3000), nullable=False)
-	replies = db.relationship("Post")
+	replies = db.relationship("Post", cascade="all, delete-orphan")
 
 	def __init__(self, user_id, content, reply_to):
 		self.user_id = user_id
