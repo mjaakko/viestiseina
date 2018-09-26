@@ -1,7 +1,7 @@
 from application import app, db
 from flask import redirect, render_template, request, url_for
 from flask_login import login_required, current_user
-from application.posts.models import Post
+from application.posts.models import Post, Hashtag
 from application.posts.forms import PostForm
 
 @app.route("/posts", methods=["GET"])
@@ -60,3 +60,9 @@ def posts_create():
     db.session().commit()
   
     return redirect(url_for("posts_index"))
+
+@app.route("/hashtags")
+def hashtags_index():
+    counts = Hashtag.get_total_hashtag_counts()
+
+    return render_template("hashtags/list.html", counts = counts)

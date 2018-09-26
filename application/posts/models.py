@@ -1,5 +1,7 @@
 from application import db
 
+from sqlalchemy.sql import text
+
 association_table = db.Table('post_hashtag', db.Model.metadata,
     db.Column('post_id', db.Integer, db.ForeignKey('post.id')),
     db.Column('hashtag_id', db.Integer, db.ForeignKey('hashtag.id'))
@@ -44,3 +46,14 @@ class Hashtag(db.Model):
 			db.session.add(instance)
 			db.session.commit()
 			return instance
+
+	@staticmethod
+	def get_total_hashtag_counts():
+		stmt = text("SELECT hashtag.id, hashtag.name, COUNT(hashtag.id) FROM hashtag, post_hashtag WHERE hashtag.id = post_hashtag.hashtag_id GROUP BY hashtag.id ORDER BY COUNT(hashtag.id) DESC")
+		res = db.engine.execute(stmt)
+		
+		response = []
+		for row in res:
+			response.append({"name": row[1], "count": row[2]})
+
+		return response

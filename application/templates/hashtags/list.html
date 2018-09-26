@@ -1,0 +1,11 @@
+{% extends "layout.html" %}
+
+{% block body %}
+	<ol>
+		{% for count in counts %}
+		<li>
+			<b>{{ count.name }}</b> - {{ count.count }}
+		</li>
+		{% endfor %}
+	</ol>
+{% endblock %}
