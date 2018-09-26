@@ -1,8 +1,8 @@
 from application import db
 
-association_table = Table('post_hashtag', db.Model.metadata,
-    db.Column('post_id', Integer, db.ForeignKey('post.id')),
-    db.Column('hashtag_id', Integer, db.ForeignKey('hashtag.id'))
+association_table = db.Table('post_hashtag', db.Model.metadata,
+    db.Column('post_id', db.Integer, db.ForeignKey('post.id')),
+    db.Column('hashtag_id', db.Integer, db.ForeignKey('hashtag.id'))
 )
 
 class Post(db.Model):
@@ -14,21 +14,33 @@ class Post(db.Model):
 	user_id = db.Column(db.Integer, db.ForeignKey("account.id"), nullable=False)
 	content = db.Column(db.String(3000), nullable=False)
 	replies = db.relationship("Post", cascade="all, delete-orphan")
-        hashtags = db.relationship("Hashtag",
+	hashtags = db.relationship("Hashtag",
 		secondary=association_table,
 		back_populates="posts")
 
 	def __init__(self, user_id, content, reply_to):
 		self.user_id = user_id
 		self.content = content
+		self.hashtags = list(map(lambda hashtag: Hashtag.get_or_create(name=hashtag), filter(lambda word: word.startswith("#") and len(word) <= 40, content.split())))
 		self.parent_id = reply_to
 
 class Hashtag(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
-        name = db.Column(db.String(40), nullable=False, unique=True)
-        posts = db.relationship("Parent",
-               secondary=association_table,
-               back_populates="hashtags")
+	name = db.Column(db.String(40), nullable=False, unique=True)
+	posts = db.relationship("Post",
+		secondary=association_table,
+		back_populates="hashtags")
 
-        def __init__(self, name):
-                self.name = name
+	def __init__(self, name):
+		self.name = name
+
+	@staticmethod
+	def get_or_create(**kwargs):
+		instance = Hashtag.query.filter_by(**kwargs).first()
+		if instance:
+			return instance
+		else:
+			instance = Hashtag(**kwargs)
+			db.session.add(instance)
+			db.session.commit()
+			return instance
