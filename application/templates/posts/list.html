@@ -1,14 +1,16 @@
 {% extends "layout.html" %}
 
 {% block body %}
-	<div>
+	<ul class="list-unstyled">
 		{% for post in posts %}
-		<div>
-			{% include 'posts/post.html' %}
-			{% if current_user.id == post.user_id %}
-			<a href="posts/update/{{ post.id }}">Muokkaa</a> - <a href="posts/delete/{{ post.id }}">Poista</a>
-			{% endif %}
-		</div>		
+		<li class="media mb-4">
+			<div class="media-body border bg-light p-1">
+				{% include 'posts/post.html' %}
+				{% if current_user.id == post.user_id %}
+				<a href="posts/update/{{ post.id }}">Muokkaa</a> - <a href="posts/delete/{{ post.id }}">Poista</a>
+				{% endif %}
+			</div>
+		</li>		
 		{% endfor %}
-	</div>
+	</ul>
 {% endblock %}
