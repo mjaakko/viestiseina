@@ -54,6 +54,6 @@ class Hashtag(db.Model):
 		
 		response = []
 		for row in res:
-			response.append({"name": row[1], "count": row[2]})
+			response.append({"id": row[0], "name": row[1], "count": row[2]})
 
 		return response
