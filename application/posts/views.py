@@ -66,3 +66,7 @@ def hashtags_index():
     counts = Hashtag.get_total_hashtag_counts()
 
     return render_template("hashtags/list.html", counts = counts)
+
+@app.route("/hashtags/<hashtag_id>/")
+def hashtag_view(hashtag_id):
+    return render_template("hashtags/posts_with_hashtag.html", posts = Post.query.filter(Post.hashtags.any(id=hashtag_id)).order_by(Post.create_time.desc()).all())

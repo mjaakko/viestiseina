@@ -1,0 +1,13 @@
+{% extends "layout.html" %}
+
+{% block body %}
+	<ul class="list-unstyled">
+		{% for post in posts %}
+		<li class="media mb-4">
+			<div class="media-body border bg-light p-1">
+				{% include 'posts/post.html' %}
+			</div>
+		</li>		
+		{% endfor %}
+	</ul>
+{% endblock %}
