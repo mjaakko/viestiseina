@@ -27,6 +27,18 @@ from application.auth.models import User
 from os import urandom
 app.config["SECRET_KEY"] = urandom(32)
 
+from datetime import datetime, tzinfo
+from pytz import timezone
+import pytz
+
+helsinki_tz = timezone("Europe/Helsinki")
+
+def format_datetime(value):
+    helsinki_time = pytz.utc.localize(value, is_dst=None).astimezone(helsinki_tz)
+    return helsinki_time.strftime("%d-%m-%Y %H:%M")
+
+app.jinja_env.filters['datetime'] = format_datetime
+
 from flask_login import LoginManager
 login_manager = LoginManager()
 login_manager.init_app(app)
