@@ -4,12 +4,11 @@
 	<div>
 		{% for post in posts %}
 		<div>
-			<p>{{ post.content }}</p>
-			<b>{{ post.user.name }}</b>
+			{% include 'posts/post.html' %}
 			{% if current_user.id == post.user_id %}
 			<a href="posts/update/{{ post.id }}">Muokkaa</a> - <a href="posts/delete/{{ post.id }}">Poista</a>
 			{% endif %}
-		</div>
+		</div>		
 		{% endfor %}
 	</div>
 {% endblock %}
