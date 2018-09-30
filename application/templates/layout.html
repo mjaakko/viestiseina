@@ -7,30 +7,46 @@
 	</head>
 
 	<body>
-		{% if current_user.is_authenticated %}
-		<p>
-			Kirjautuneena: <b>{{ current_user.name }}</b> ― <a href="{{ url_for('auth_logout') }}">Kirjaudu ulos</a>
-		</p>
-		{% else %}
-		<p>
-			<a href="{{ url_for('auth_login') }}">Kirjaudu sisään</a> - <a href="{{ url_for('auth_register') }}">Rekisteröidy</a>
-		</p>
-		{% endif %}
+		<nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4">
+			<a class="navbar-brand" href="#">Viestiseinä</a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarCollapse">
+				<ul class="navbar-nav mr-auto">
+					<li class="nav-item">
+						<a class="nav-link" href="{{ url_for('posts_index') }} ">Viestit</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="{{ url_for('posts_form') }} ">Lähetä uusi viesti</a>
+					</li>
+				</ul>
+				<div class="form-inline mt-2 mt-md-0">
+					{% if current_user.is_authenticated %}
+					<span class="navbar-text mr-2">Kirjautuneena: <b>{{ current_user.name }}</b></span>
+					<form action="{{ url_for('auth_logout') }}">
+						<input class="btn btn-primary mr-1" type="submit" value="Kirjaudu ulos" />
+					</form>
+					{% else %}
+					<form action="{{ url_for('auth_login') }}">
+						<input class="btn btn-primary mr-1" type="submit" value="Kirjaudu sisään" />
+					</form>			
+					<form action="{{ url_for('auth_register') }}">
+						<input class="btn btn-secondary" type="submit" value="Rekisteröidy" />
+					</form>					
+					{% endif %}
+				</div>
+			</div>
+		</nav>
 
-
-		<ul>
-			<li><a href="{{ url_for('posts_index') }}">Viestit</a></li>
-			<li><a href="{{ url_for('posts_form') }}">Lähetä uusi viesti</a></li>
-		</ul>
-      
-
-		{% block body %}
-		<p>
-			content
-		</p>
-		{% endblock %}
-
-
+		
+		<main role="main" class="container">
+			{% block body %}
+			<p>
+				content
+			</p>
+			{% endblock %}
+		</main>
 
 		<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
