@@ -27,6 +27,7 @@ from application.auth.models import User
 from os import urandom
 app.config["SECRET_KEY"] = urandom(32)
 
+#Jinja filters
 from datetime import datetime, tzinfo
 from pytz import timezone
 import pytz
@@ -38,6 +39,23 @@ def format_datetime(value):
     return helsinki_time.strftime("%d-%m-%Y %H:%M")
 
 app.jinja_env.filters['datetime'] = format_datetime
+
+import html
+
+def hashtagify(post):
+    def hashtagify_word(word):
+        hashtag = next(filter(lambda hashtag: hashtag.name == word, post.hashtags), None)
+        if hashtag is not None:
+            print("Added hashtag to "+word)
+            return "<a href=\"hashtags/"+str(hashtag.id)+"\">"+hashtag.name+"</a>" 
+        else:
+            print("Returning "+word+" as itself")
+            return word
+
+    hashtagged = list(map(hashtagify_word, html.escape(post.content).split()))
+    return " ".join(hashtagged)
+
+app.jinja_env.filters['hashtagify'] = hashtagify
 
 from flask_login import LoginManager
 login_manager = LoginManager()
