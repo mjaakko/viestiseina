@@ -1,6 +1,7 @@
 from application import db
 
 from sqlalchemy.sql import text
+from sqlalchemy.orm import backref
 
 association_table = db.Table('post_hashtag', db.Model.metadata,
     db.Column('post_id', db.Integer, db.ForeignKey('post.id')),
@@ -15,7 +16,7 @@ class Post(db.Model):
 	modify_time = db.Column(db.DateTime, default=db.func.current_timestamp(), onupdate=db.func.current_timestamp(), nullable=False)
 	user_id = db.Column(db.Integer, db.ForeignKey("account.id"), nullable=False)
 	content = db.Column(db.String(3000), nullable=False)
-	replies = db.relationship("Post", cascade="all, delete-orphan")
+	replies = db.relationship("Post", backref=backref("parent", remote_side=id) , cascade="all, delete-orphan")
 	hashtags = db.relationship("Hashtag",
 		secondary=association_table,
 		back_populates="posts")
@@ -25,6 +26,13 @@ class Post(db.Model):
 		self.content = content
 		self.hashtags = list(map(lambda hashtag: Hashtag.get_or_create(name=hashtag), filter(lambda word: word.startswith("#") and len(word) <= 40, content.split())))
 		self.parent_id = reply_to
+
+	# Finds the first post in the thread
+	def find_top(self):
+		if self.parent:
+			return self.parent.find_top()
+		else:
+			return self
 
 class Hashtag(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
