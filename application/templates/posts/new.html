@@ -1,6 +1,3 @@
-{% extends "layout.html" %}
-  
-{% block body %}
 <form method="POST" action="{{ url_for('posts_create') }}">
 	{{ form.content.label }}
 	<br/>
@@ -13,4 +10,3 @@
 	</ul>
 	<input type="submit" value="Lähetä viesti"/>
 </form>
-{% endblock %}

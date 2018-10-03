@@ -1,6 +1,29 @@
 {% extends "layout.html" %}
 
 {% block body %}
+	{% if current_user.is_authenticated %}
+	<div>
+		<p>
+			{% if show %}
+			<button class="btn btn-primary" type="button" data-toggle="collapse show" data-target="#send-message" aria-expanded="false" aria-controls="send-message">
+			{% else %}
+			<button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#send-message" aria-expanded="false" aria-controls="send-message">
+			{% endif %}
+				Lähetä uusi viesti
+	  		</button>
+		</p>
+		{% if show %}
+		<div class="collapse.show" id="send-message">
+		{% else %}
+		<div class="collapse" id="send-message">
+		{% endif %}
+	
+			<div class="card card-body mb-3">
+    				{% include 'posts/new.html' %}
+  			</div>
+		</div>
+	</div>
+	{% endif %}
 	<ul class="list-unstyled">
 		{% for post in posts %}
 		<li class="media mb-4">
