@@ -1,8 +1,8 @@
 from flask import render_template, request, redirect, url_for
-from flask_login import login_user, logout_user
+from flask_login import login_user, logout_user, login_required
 
-from application import app, db
-from application.auth.models import User
+from application import app, db, requires_role
+from application.auth.models import User, Role
 from application.auth.forms import LoginForm
 
 @app.route("/auth/login", methods = ["GET", "POST"])
@@ -59,3 +59,15 @@ def auth_register():
 def user_view(user_id):
     user = User.query.filter_by(id = user_id).first()
     return render_template("auth/user.html", user = user)
+
+@app.route("/user/<user_id>/give_mod_role")
+@login_required
+@requires_role("ADMIN")
+def give_mod_role(user_id):
+    user = User.query.get(user_id)
+    user.roles.append(Role.query.filter_by(name="MODERATOR").first())
+
+    db.session.add(user)
+    db.session.commit()
+
+    return redirect(url_for("user_view", user_id = user_id))
