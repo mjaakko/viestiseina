@@ -54,7 +54,7 @@ def posts_update(post_id):
 @app.route("/posts/delete/<post_id>/")
 @login_required
 def posts_delete(post_id):
-    post = Post.query.get(post_id).first()
+    post = Post.query.get(post_id)
     if post.user_id is not current_user.id or current_user.has_role("MODERATOR"):
         return login_manager.unauthorized()
 
