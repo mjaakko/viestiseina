@@ -46,10 +46,8 @@ def hashtagify(post):
     def hashtagify_word(word):
         hashtag = next(filter(lambda hashtag: hashtag.name == word, post.hashtags), None)
         if hashtag is not None:
-            print("Added hashtag to "+word)
             return "<a href=\"hashtags/"+str(hashtag.id)+"\">"+hashtag.name+"</a>" 
         else:
-            print("Returning "+word+" as itself")
             return word
 
     hashtagged = list(map(hashtagify_word, html.escape(post.content).split()))
