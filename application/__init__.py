@@ -55,12 +55,41 @@ def hashtagify(post):
 
 app.jinja_env.filters['hashtagify'] = hashtagify
 
+# Authentication and authorization
 from flask_login import LoginManager
 login_manager = LoginManager()
 login_manager.init_app(app)
 
 login_manager.login_view = "auth_login"
 login_manager.login_message = "Kirjaudu sisään ennen tämän toiminnon käyttöä"
+
+
+from functools import wraps
+
+def login_required(role="ANY"):
+	def wrapper(fn):
+		@wraps(fn)
+		def decorated_view(*args, **kwargs):
+			if not current_user:
+				return login_manager.unauthorized()
+	
+			if not current_user.is_authenticated():
+				return login_manager.unauthorized()
+	            
+			unauthorized = False
+	
+			if role != "ANY":
+				unauthorized = True
+                
+				if current_user.has_role(role):
+					unauthorized = False
+	
+			if unauthorized:
+				return login_manager.unauthorized()
+            
+			return fn(*args, **kwargs)
+		return decorated_view
+	return wrapper
 
 @login_manager.user_loader
 def load_user(user_id):
