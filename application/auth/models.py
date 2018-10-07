@@ -1,4 +1,5 @@
 from application import db
+from sqlalchemy.sql import text
 
 association_table = db.Table('user_role', db.Model.metadata,
     db.Column('user_id', db.Integer, db.ForeignKey('account.id')),
@@ -36,6 +37,12 @@ class User(db.Model):
 			if user_role.name == role:
 				return True
 		return False
+
+	def get_post_count(self):
+		stmt = text("SELECT COUNT(post.id) FROM post WHERE post.user_id = :user_id").params(user_id = self.id)
+		res = db.engine.execute(stmt)
+
+		return res.fetchone()[0]
 
 
 class Role(db.Model):
