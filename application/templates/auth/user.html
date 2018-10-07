@@ -1,0 +1,19 @@
+{% extends "layout.html" %}
+
+{% block body %}
+	<h1>{{ user.name }}</h1>
+	<ul>
+		<li>{{ user.get_post_count() }}	lähetettyä viestiä</li>
+	</ul>
+
+	<h2>Viestit</h2>
+	<ul class="list-unstyled">
+		{% for post in user.posts %}
+		<li class="media mb-4">
+			<div class="media-body border bg-light p-1">
+				{% include 'posts/post.html' %}
+			</div>
+		</li>		
+		{% endfor %}
+	</ul>
+{% endblock %}

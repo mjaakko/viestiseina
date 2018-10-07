@@ -54,3 +54,8 @@ def auth_register():
     login_user(user)
 
     return redirect(url_for("index"))    
+
+@app.route("/user/<user_id>")
+def user_view(user_id):
+    user = User.query.filter_by(id = user_id).first()
+    return render_template("auth/user.html", user = user)
