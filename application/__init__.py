@@ -23,7 +23,7 @@ from application.auth import models
 from application.auth import views
 
 #
-from application.auth.models import User
+from application.auth.models import User, Role
 from os import urandom
 app.config["SECRET_KEY"] = urandom(32)
 
@@ -100,6 +100,15 @@ try:
     db.create_all()
 except:
     pass
+
+# Create roles, if needed
+roles = ["USER", "MODERATOR", "ADMIN"]
+for role in roles:
+	role_exists = Role.query.filter_by(name=role).first()
+	if not role_exists:
+		db_role = Role(name=role)
+		db.session.add(db_role)
+		db.session.commit()
 
 # Create demo user
 exists = User.query.filter_by(name="demo").first()
