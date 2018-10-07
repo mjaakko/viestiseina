@@ -17,6 +17,7 @@ class User(db.Model):
 	def __init__(self, name, password):
 		self.name = name
 		self.password = password
+		self.roles.append(Role.query.filter_by(name="USER").first())
 
 	def get_id(self):
 		return self.id
