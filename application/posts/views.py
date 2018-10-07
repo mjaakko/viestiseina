@@ -1,6 +1,6 @@
-from application import app, db
+from application import app, db, login_manager
 from flask import redirect, render_template, request, url_for
-from flask_login import login_required, current_user
+from flask_login import current_user, login_required 
 from application.posts.models import Post, Hashtag
 from application.posts.forms import PostForm
 
@@ -42,6 +42,9 @@ def posts_update(post_id):
         return render_template("posts/update.html", form = form, post_id = post_id)
 
     post = Post.query.get(post_id)
+    if post.user_id is not current_user.id or current_user.has_role("MODERATOR"):
+        return login_manager.unauthorized()
+
     post.content = form.content.data
 
     db.session().commit()
@@ -51,6 +54,10 @@ def posts_update(post_id):
 @app.route("/posts/delete/<post_id>/")
 @login_required
 def posts_delete(post_id):
+    post = Post.query.get(post_id).first()
+    if post.user_id is not current_user.id or current_user.has_role("MODERATOR"):
+        return login_manager.unauthorized()
+
     db.session.query(Post).filter(Post.id==post_id).delete()
     db.session.commit()
 
