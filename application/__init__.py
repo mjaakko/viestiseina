@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, url_for
 app = Flask(__name__)
 
 from flask_sqlalchemy import SQLAlchemy
@@ -46,7 +46,7 @@ def hashtagify(post):
     def hashtagify_word(word):
         hashtag = next(filter(lambda hashtag: hashtag.name == word, post.hashtags), None)
         if hashtag is not None:
-            return "<a href=\"hashtags/"+str(hashtag.id)+"\">"+hashtag.name+"</a>" 
+            return "<a href=\""+url_for('hashtag_view', hashtag_id = hashtag.id)+"\">"+hashtag.name+"</a>" 
         else:
             return word
 
