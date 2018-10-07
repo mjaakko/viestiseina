@@ -13,6 +13,42 @@ else:
 
 db = SQLAlchemy(app)
 
+#
+from application.auth.models import User, Role
+from os import urandom
+app.config["SECRET_KEY"] = urandom(32)
+
+# Authentication and authorization
+from flask_login import LoginManager
+login_manager = LoginManager()
+login_manager.init_app(app)
+
+login_manager.login_view = "auth_login"
+login_manager.login_message = "Kirjaudu sisään ennen tämän toiminnon käyttöä"
+
+
+from functools import wraps
+
+def requires_role(role):
+	def wrapper(fn):
+		@wraps(fn)
+		def decorated_view(*args, **kwargs):
+			if not current_user:
+				return login_manager.unauthorized()
+	
+			if not current_user.is_authenticated():
+				return login_manager.unauthorized()
+	            
+			authorized = current_user.has_role(role)
+	
+			if not authorized:
+				return login_manager.unauthorized()
+            
+			return fn(*args, **kwargs)
+		return decorated_view
+	return wrapper
+
+
 # 
 from application import views
 
@@ -22,10 +58,10 @@ from application.posts import views
 from application.auth import models 
 from application.auth import views
 
-#
-from application.auth.models import User, Role
-from os import urandom
-app.config["SECRET_KEY"] = urandom(32)
+# User loader
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(user_id)
 
 #Jinja filters
 from datetime import datetime, tzinfo
@@ -54,46 +90,6 @@ def hashtagify(post):
     return " ".join(hashtagged)
 
 app.jinja_env.filters['hashtagify'] = hashtagify
-
-# Authentication and authorization
-from flask_login import LoginManager
-login_manager = LoginManager()
-login_manager.init_app(app)
-
-login_manager.login_view = "auth_login"
-login_manager.login_message = "Kirjaudu sisään ennen tämän toiminnon käyttöä"
-
-
-from functools import wraps
-
-def login_required(role="ANY"):
-	def wrapper(fn):
-		@wraps(fn)
-		def decorated_view(*args, **kwargs):
-			if not current_user:
-				return login_manager.unauthorized()
-	
-			if not current_user.is_authenticated():
-				return login_manager.unauthorized()
-	            
-			unauthorized = False
-	
-			if role != "ANY":
-				unauthorized = True
-                
-				if current_user.has_role(role):
-					unauthorized = False
-	
-			if unauthorized:
-				return login_manager.unauthorized()
-            
-			return fn(*args, **kwargs)
-		return decorated_view
-	return wrapper
-
-@login_manager.user_loader
-def load_user(user_id):
-    return User.query.get(user_id)
 
 # Create database tables, if needed
 try: 
