@@ -95,11 +95,13 @@ def login_required(role="ANY"):
 def load_user(user_id):
     return User.query.get(user_id)
 
+# Create database tables, if needed
 try: 
     db.create_all()
 except:
     pass
 
+# Create demo user
 exists = User.query.filter_by(name="demo").first()
 if not exists:
     demo = User(name="demo", password="demo")
