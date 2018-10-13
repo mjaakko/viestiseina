@@ -42,7 +42,7 @@ def posts_update(post_id):
         return render_template("posts/update.html", form = form, post_id = post_id)
 
     post = Post.query.get(post_id)
-    if post.user_id is not current_user.id or current_user.has_role("MODERATOR"):
+    if not (post.user_id is current_user.id or current_user.has_role("MODERATOR")):
         return login_manager.unauthorized()
 
     post.content = form.content.data
@@ -55,7 +55,7 @@ def posts_update(post_id):
 @login_required
 def posts_delete(post_id):
     post = Post.query.get(post_id)
-    if post.user_id is not current_user.id or current_user.has_role("MODERATOR"):
+    if not (post.user_id is current_user.id or current_user.has_role("MODERATOR")):
         return login_manager.unauthorized()
 
     db.session.query(Post).filter(Post.id==post_id).delete()
