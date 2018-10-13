@@ -1,5 +1,6 @@
 from application import db
-from sqlalchemy.sql import text
+from application.posts.models import Post
+from sqlalchemy.sql import text, desc
 
 association_table = db.Table('user_role', db.Model.metadata,
     db.Column('user_id', db.Integer, db.ForeignKey('account.id')),
@@ -12,7 +13,7 @@ class User(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
 	name = db.Column(db.String(20), nullable=False)
 	password = db.Column(db.String(50), nullable=False)
-	posts = db.relationship("Post", backref="user", lazy=True)
+	posts = db.relationship("Post", backref="user", lazy=True, order_by= lambda: desc(Post.create_time))
 	roles = db.relationship("Role", secondary=association_table, back_populates="users")
 
 	def __init__(self, name, password):

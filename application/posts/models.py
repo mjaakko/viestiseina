@@ -1,6 +1,6 @@
 from application import db
 
-from sqlalchemy.sql import text
+from sqlalchemy.sql import text, desc
 from sqlalchemy.orm import backref
 
 association_table = db.Table('post_hashtag', db.Model.metadata,
@@ -16,7 +16,7 @@ class Post(db.Model):
 	modify_time = db.Column(db.DateTime, default=db.func.current_timestamp(), onupdate=db.func.current_timestamp(), nullable=False)
 	user_id = db.Column(db.Integer, db.ForeignKey("account.id"), nullable=False)
 	content = db.Column(db.String(3000), nullable=False)
-	replies = db.relationship("Post", backref=backref("parent", remote_side=id) , cascade="all, delete-orphan")
+	replies = db.relationship("Post", backref=backref("parent", remote_side=id) , cascade="all, delete-orphan", order_by= lambda: desc(Post.create_time))
 	hashtags = db.relationship("Hashtag",
 		secondary=association_table,
 		back_populates="posts")
@@ -53,7 +53,7 @@ class Hashtag(db.Model):
 	name = db.Column(db.String(40), nullable=False, unique=True)
 	posts = db.relationship("Post",
 		secondary=association_table,
-		back_populates="hashtags")
+		back_populates="hashtags", order_by= lambda: desc(Post.create_time))
 
 	def __init__(self, name):
 		self.name = name
