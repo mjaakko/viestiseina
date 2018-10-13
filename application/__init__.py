@@ -21,13 +21,19 @@ from os import urandom
 app.config["SECRET_KEY"] = urandom(32)
 
 # Authentication and authorization
-from flask_login import LoginManager, current_user
+from flask_login import LoginManager, current_user, AnonymousUserMixin
 login_manager = LoginManager()
 login_manager.init_app(app)
 
 login_manager.login_view = "auth_login"
 login_manager.login_message = "Kirjaudu sisään ennen tämän toiminnon käyttöä"
 
+#Anonymous user which has no roles
+class Anonymous(AnonymousUserMixin):
+	def has_role(self, role):
+		return False
+
+login_manager.anonymous_user = Anonymous
 
 from functools import wraps
 
