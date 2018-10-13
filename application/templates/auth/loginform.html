@@ -2,42 +2,11 @@
 
 {% block body %}
 {{ error }}
-<form method="POST" action="{{ url_for('auth_login') }}">
-  <table>
-    <tr>
-      <td>
-	{{ form.username.label }}
-      </td>
-      <td>
-	{{ form.username }}
-      </td>
-      <td>
-	 <ul>
-	   {% for error in form.username.errors %}
-	   <li>{{ error }}</li>
-	   {% endfor %}
-	 </ul>
-      </td>
-    </tr>
-    <tr>
-      <td>
-	{{ form.password.label }}
-      </td>
-      <td>
-	{{ form.password }}
-      </td>
-      <td>
-	<ul>
-	  {% for error in form.password.errors %}
-	  <li>{{ error }}</li>
-	  {% endfor %}
-	</ul>
-      </td>
-    </tr>
-    <tr>
-      <td colspan="2">
-	<input type="submit" value="Kirjaudu"/>
-      </td>
-    </tr>
+<form class="form" method="POST" action="{{ url_for('auth_login') }}">
+	{{ form.hidden_tag() }}
+	{{ wtf.form_field(form.username, form_type="basic") }}
+	{{ wtf.form_field(form.password, form_type="basic") }}
+
+	<input class="btn btn-primary" type="submit" value="Kirjaudu"/>
 </form>
 {% endblock %}
