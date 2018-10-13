@@ -34,6 +34,20 @@ class Post(db.Model):
 		else:
 			return self
 
+	def reply_count(self):
+		stmt = text("""WITH RECURSIVE replies AS (
+					SELECT id, parent_id, id as root_id
+					FROM post
+					WHERE root_id IS :post_id
+					UNION ALL
+					SELECT c.id, c.parent_id, p.root_id
+					FROM post c
+					JOIN replies p ON c.parent_id = p.id
+				) SELECT root_id AS post_id, count(*) AS reply_count FROM replies WHERE id <> root_id""").params(post_id = self.id)
+		res = db.engine.execute(stmt)
+
+		return res.fetchone()['reply_count']
+
 class Hashtag(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
 	name = db.Column(db.String(40), nullable=False, unique=True)
