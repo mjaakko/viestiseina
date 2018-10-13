@@ -25,7 +25,7 @@
 				</ul>
 				<div class="form-inline mt-2 mt-md-0">
 					{% if current_user.is_authenticated %}
-					<span class="navbar-text mr-2">Kirjautuneena: <b>{{ current_user.name }}</b></span>
+					<span class="navbar-text mr-2">Kirjautuneena: <a href="{{ url_for('user_view', user_id = current_user.id) }}"><b>{{ current_user.name }}</b></a></span>
 					<form action="{{ url_for('auth_logout') }}">
 						<input class="btn btn-primary mr-1" type="submit" value="Kirjaudu ulos" />
 					</form>
