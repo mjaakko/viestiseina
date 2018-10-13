@@ -1,3 +1,4 @@
-<p>{{ post | hashtagify | safe}}</p>
-<div><a href="{{ url_for('user_view', user_id = post.user_id) }}"><b>{{ post.user.name }}</b></a> <span>{{ post.create_time|datetime }}{% if post.create_time != post.modify_time %} <i>Muokattu: {{ post.modify_time|datetime }}</i>{% endif %}</span></div>
-
+<h5><a href="{{ url_for('user_view', user_id = post.user_id) }}">{{ post.user.name }}</a></h3>
+<p class="small font-weight-light mb-0">{{ post.create_time|datetime }}{% if post.create_time != post.modify_time %} <mark>Muokattu: {{ post.modify_time|datetime }}</mark>{% endif %}</p>
+<hr class="my-2">
+<p class="my-0">{{ post | hashtagify | safe}}</p>
