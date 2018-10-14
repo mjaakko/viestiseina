@@ -71,7 +71,7 @@ class Hashtag(db.Model):
 
 	@staticmethod
 	def get_total_hashtag_counts():
-		stmt = text("SELECT hashtag.id, hashtag.name, COUNT(hashtag.id) FROM hashtag, post_hashtag WHERE hashtag.id = post_hashtag.hashtag_id GROUP BY hashtag.id ORDER BY COUNT(hashtag.id) DESC")
+		stmt = text("SELECT hashtag.id, hashtag.name, COUNT(hashtag.id) FROM hashtag, post_hashtag, post WHERE hashtag.id = post_hashtag.hashtag_id AND post_hashtag.post_id = post.id GROUP BY hashtag.id ORDER BY COUNT(hashtag.id) DESC")
 		res = db.engine.execute(stmt)
 		
 		response = []
