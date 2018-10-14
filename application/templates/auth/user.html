@@ -5,7 +5,23 @@
 	<ul>
 		<li>{{ user.get_post_count() }}	lähetettyä viestiä</li>
 	</ul>
-
+	{% if current_user.has_role("ADMIN") and current_user.id != user.id %}
+		<div class="form-inline">
+			{% if user.has_role("MODERATOR") %}
+			<form action="{{ url_for('remove_mod_role', user_id = user.id) }}">
+				<input class="btn btn-secondary btn-sm mr-1" type="submit" value="Poista moderaattorin oikeudet" />
+			</form>
+			{% else %}			
+			<form action="{{ url_for('give_mod_role', user_id = user.id) }}">
+				<input class="btn btn-secondary btn-sm mr-1" type="submit" value="Anna moderaattorin oikeudet" />
+			</form>
+			{% endif %}
+			<form action="{{ url_for('remove_user', user_id = user.id) }}">
+				<input class="btn btn-secondary btn-sm mr-1" type="submit" value="Poista käyttäjä" />
+			</form>
+		</div>
+        {% endif %}
+	<hr class="my-2">
 	<h2>Viestit</h2>
 	<ul class="list-unstyled">
 		{% for post in user.posts %}
