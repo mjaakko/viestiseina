@@ -7,6 +7,7 @@ viesteihin.
 
 * [Sovellus Herokussa](https://viestiseina-tsoha.herokuapp.com/)
   * Testikäyttäjä: **demo**, salasana: **demo**
+  * Testikäyttäjä ylläpitäjän oikeuksin: **admin**, salasana: **admin**
 
 * [Asennusohje](docs/asennusohje.md)
 * [Tietokantakaavio](docs/tietokantakaavio.png)
