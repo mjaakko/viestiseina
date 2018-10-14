@@ -23,6 +23,31 @@ def posts_create():
   
     return redirect(url_for("posts_index"))
 
+@app.route("/posts/reply_to/<post_id>/", methods=["GET"])
+@login_required
+def posts_reply_form(post_id):
+    post = Post.query.get(post_id)
+
+    form = PostForm()
+
+    return render_template("posts/reply_to.html", post = post, form = form)
+
+@app.route("/posts/reply_to/<post_id>/", methods=["POST"])
+@login_required
+def posts_reply_to(post_id):
+    form = PostForm(request.form)
+
+    if not form.validate():
+        post = Post.query.get(post_id)
+        return render_template("posts/reply_to.html", post = post, form = form)
+
+    post = Post(current_user.id, form.content.data, post_id)
+
+    db.session().add(post)
+    db.session().commit()
+
+    return redirect(url_for("posts_thread", post_id = post_id))
+
 @app.route("/posts/update/<post_id>/")
 @login_required
 def posts_update_form(post_id):
