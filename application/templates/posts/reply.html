@@ -6,16 +6,10 @@
 	{% if current_user.is_authenticated %}
 	<hr class="my-2">
 	<div class="form-inline">
-		<form action="{{ url_for('posts_reply_form', post_id = post.id) }}">
-			<input class="btn btn-primary btn-sm mr-1" type="submit" value="Vastaa" />
-		</form>
+		<a role="button" class="btn btn-primary btn-sm mr-1" href="{{ url_for('posts_reply_form', post_id = post.id) }}">Vastaa</a>
 		{% if current_user.id == post.user_id or current_user.has_role("MODERATOR")  %}
-		<form action="{{ url_for('posts_update_form', post_id = post.id, redirect_thread = True) }}">
-			<input class="btn btn-secondary btn-sm mr-1" type="submit" value="Muokkaa" />
-		</form>
-		<form action="{{ url_for('posts_delete', post_id = post.id, redirect_thread = True) }}">
-			<input class="btn btn-secondary btn-sm mr-1" type="submit" value="Poista" />
-		</form>
+		<a role="button" class="btn btn-secondary btn-sm mr-1" href="{{ url_for('posts_update_form', post_id = post.id, redirect_thread = True) }}">Muokkaa</a>
+		<a role="button" class="btn btn-secondary btn-sm mr-1" href="{{ url_for('posts_delete', post_id = post.id, redirect_thread = True) }}">Poista</a>
 		{% endif %}
 	</div>
 	{% endif %}

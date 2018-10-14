@@ -3,6 +3,7 @@ from flask import redirect, render_template, request, url_for
 from flask_login import current_user, login_required 
 from application.posts.models import Post, Hashtag
 from application.posts.forms import PostForm
+import ast
 
 @app.route("/posts", methods=["GET"])
 def posts_index():
@@ -74,7 +75,7 @@ def posts_update(post_id):
 
     db.session().commit()
 
-    if request.args.get("redirect_thread", False):
+    if ast.literal_eval(request.args.get("redirect_thread", "False")):
         return redirect(url_for("posts_thread", post_id = post_id))
     else:
         return redirect(url_for("posts_index"))
@@ -86,11 +87,13 @@ def posts_delete(post_id):
     if not (post.user_id is current_user.id or current_user.has_role("MODERATOR")):
         return login_manager.unauthorized()
 
+    redir_id = post.find_top().id
+
     db.session.query(Post).filter(Post.id==post_id).delete()
     db.session.commit()
 
-    if request.args.get("redirect_thread", False):
-        return redirect(url_for("posts_thread", post_id = post_id))
+    if ast.literal_eval(request.args.get("redirect_thread", "False")) or redir_id == post_id:
+        return redirect(url_for("posts_thread", post_id = redir_id))
     else:
         return redirect(url_for("posts_index"))
 
