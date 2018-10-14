@@ -99,6 +99,14 @@ def hashtagify(post):
 
 app.jinja_env.filters['hashtagify'] = hashtagify
 
+def pluralize(number, singular, plural):
+	if number == 1:
+		return str(number) + " " + singular
+	else:
+		return str(number) + " " + plural
+
+app.jinja_env.filters['pluralize'] = pluralize
+
 # Create database tables, if needed
 try: 
     db.create_all()
