@@ -89,7 +89,8 @@ def posts_delete(post_id):
 
     redir_id = post.find_top().id
 
-    db.session.query(Post).filter(Post.id==post_id).delete()
+    post = db.session.query(Post).filter(Post.id==post_id).first()
+    db.session.delete(post)
     db.session.commit()
 
     if ast.literal_eval(request.args.get("redirect_thread", "False")) or redir_id == post_id:

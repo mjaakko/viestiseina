@@ -16,7 +16,7 @@ class Post(db.Model):
 	modify_time = db.Column(db.DateTime, default=db.func.current_timestamp(), onupdate=db.func.current_timestamp(), nullable=False)
 	user_id = db.Column(db.Integer, db.ForeignKey("account.id"), nullable=False)
 	content = db.Column(db.String(3000), nullable=False)
-	replies = db.relationship("Post", backref=backref("parent", remote_side=id) , cascade="all, delete-orphan", order_by= lambda: desc(Post.create_time))
+	replies = db.relationship("Post", backref=backref("parent", remote_side=id), cascade="all, delete-orphan", order_by= lambda: desc(Post.create_time))
 	hashtags = db.relationship("Hashtag",
 		secondary=association_table,
 		back_populates="posts")
