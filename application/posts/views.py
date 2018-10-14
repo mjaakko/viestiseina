@@ -31,7 +31,7 @@ def posts_update_form(post_id):
     form = PostForm()
     form.content.data = post.content
 
-    return render_template("posts/update.html", form = form, post_id = post.id)
+    return render_template("posts/update.html", form = form, post_id = post.id, redirect_thread = request.args.get("redirect_thread", False))
 
 @app.route("/posts/update/<post_id>/", methods=["POST"])
 @login_required
@@ -49,7 +49,10 @@ def posts_update(post_id):
 
     db.session().commit()
 
-    return redirect(url_for("posts_index"))
+    if request.args.get("redirect_thread", False):
+        return redirect(url_for("posts_thread", post_id = post_id))
+    else:
+        return redirect(url_for("posts_index"))
 
 @app.route("/posts/delete/<post_id>/")
 @login_required
@@ -61,7 +64,19 @@ def posts_delete(post_id):
     db.session.query(Post).filter(Post.id==post_id).delete()
     db.session.commit()
 
-    return redirect(url_for("posts_index"))
+    if request.args.get("redirect_thread", False):
+        return redirect(url_for("posts_thread", post_id = post_id))
+    else:
+        return redirect(url_for("posts_index"))
+
+@app.route("/posts/<post_id>")
+def posts_thread(post_id):
+    post = Post.query.get(post_id)
+    #If the specified post is not the first post of the thread, find the first post
+    if post.parent:
+        return redirect(url_for("posts_thread", post_id = post.find_top().id))
+    
+    return render_template("posts/thread.html", post = post)
 
 @app.route("/hashtags")
 def hashtags_index():

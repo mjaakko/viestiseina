@@ -1,0 +1,10 @@
+<div class="media mt-4 ml-4">
+	<div class="media-body">
+		{% include 'posts/reply.html' %}
+
+		{% for reply in post.replies %}
+			{% set post = reply %}
+			{% include 'posts/post_with_replies.html' %}
+		{% endfor %}	
+	</div>
+</div>	

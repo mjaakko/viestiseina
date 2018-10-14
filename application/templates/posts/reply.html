@@ -1,0 +1,17 @@
+<div class="border bg-light p-1">
+	<h5><a href="{{ url_for('user_view', user_id = post.user_id) }}">{{ post.user.name }}</a></h3>
+	<p class="small font-weight-light mb-0">{{ post.create_time|datetime }}{% if post.create_time != post.modify_time %} <mark>Muokattu: {{ post.modify_time|datetime }}</mark>{% endif %}</p>
+	<hr class="my-2">
+	<p class="my-0">{{ post | hashtagify | safe}}</p>
+	{% if current_user.id == post.user_id or current_user.has_role("MODERATOR")  %}
+	<hr class="my-2">
+	<div class="form-inline">
+		<form action="{{ url_for('posts_update', post_id = post.id, redirect_thread = True) }}">
+			<input class="btn btn-secondary btn-sm mr-1" type="submit" value="Muokkaa" />
+		</form>
+		<form action="{{ url_for('posts_update', post_id = post.id, redirect_thread = True) }}">
+			<input class="btn btn-secondary btn-sm mr-1" type="submit" value="Poista" />
+		</form>
+	</div>
+	{% endif %}
+</div>

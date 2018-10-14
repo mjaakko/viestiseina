@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
   
 {% block body %}
-<form method="POST" action="{{ url_for('posts_update', post_id=post_id) }}">
+<form method="POST" action="{{ url_for('posts_update', post_id=post_id, redirect_thread = redirect_thread) }}">
 	{{ form.content.label }}
 	<br/>
 	{{ form.content }}
