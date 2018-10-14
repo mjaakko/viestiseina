@@ -71,3 +71,19 @@ def give_mod_role(user_id):
     db.session.commit()
 
     return redirect(url_for("user_view", user_id = user_id))
+
+@app.route("/user/<user_id>/remove_mod_role")
+@login_required
+@requires_role("ADMIN")
+def remove_mod_role(user_id):
+    user = User.query.get(user_id)
+    for user_role in user.roles:
+        if user_role.name == "MODERATOR":
+            user.roles.remove(user_role)
+
+            db.session.add(user)
+            db.session.commit() 
+
+            break
+
+    return redirect(url_for("user_view", user_id = user_id))
