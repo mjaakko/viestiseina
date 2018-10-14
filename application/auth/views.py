@@ -93,7 +93,7 @@ def remove_mod_role(user_id):
 @requires_role("ADMIN")
 def remove_user(user_id):
     user = User.query.get(user_id)
-    db.session.remove(user)
+    db.session.delete(user)
     db.session.commit()
 
     return redirect(url_for("posts_index"))
