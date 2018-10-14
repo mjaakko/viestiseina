@@ -2,15 +2,20 @@
 <p class="small font-weight-light mb-0">{{ post.create_time|datetime }}{% if post.create_time != post.modify_time %} <mark>Muokattu: {{ post.modify_time|datetime }}</mark>{% endif %}</p>
 <hr class="my-2">
 <p class="my-0">{{ post | hashtagify | safe}}</p>
-{% if show_actions and (current_user.id == post.user_id or current_user.has_role("MODERATOR"))  %}
+{% if current_user.is_authenticated and show_actions %}
 <hr class="my-2">
 <div class="form-inline">
-	<form action="posts/update/{{ post.id }}">
+	<form action="{{ url_for('posts_reply_form', post_id = post.id) }}">
+		<input class="btn btn-primary btn-sm mr-1" type="submit" value="Vastaa" />
+	</form>
+	{% if current_user.id == post.user_id or current_user.has_role("MODERATOR")  %}
+	<form action="{{ url_for('posts_update_form', post_id = post.id) }}">
 		<input class="btn btn-secondary btn-sm mr-1" type="submit" value="Muokkaa" />
 	</form>
-	<form action="posts/delete/{{ post.id }}">
+	<form action="{{ url_for('posts_delete', post_id = post.id) }}">
 		<input class="btn btn-secondary btn-sm mr-1" type="submit" value="Poista" />
 	</form>
+	{% endif %}
 </div>
 {% endif %}
 <hr class="my-2">
