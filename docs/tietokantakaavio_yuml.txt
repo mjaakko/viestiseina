@@ -1,7 +1,9 @@
 [User|id;name;password]
 [Post|id;content;create_time;modify_time]
 [Hashtag|id;name]
+[Role|id;name]
 
 [User]1-*[Post]
 [Post]1-*[Post]
 [Hashtag]*-*[Post]
+[User]*-*[Role]
