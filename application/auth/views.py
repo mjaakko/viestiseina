@@ -87,3 +87,14 @@ def remove_mod_role(user_id):
             break
 
     return redirect(url_for("user_view", user_id = user_id))
+
+@app.route("/user/<user_id>/remove_user")
+@login_required
+@requires_role("ADMIN")
+def remove_user(user_id):
+    user = User.query.get(user_id)
+    db.session.remove(user)
+    db.session.commit()
+
+    return redirect(url_for("posts_index"))
+
