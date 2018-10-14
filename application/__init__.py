@@ -128,3 +128,12 @@ if not exists:
     demo = User(name="demo", password="demo")
     db.session.add(demo)
     db.session.commit()
+
+
+# Create demo admin
+admin_exists = User.query.filter_by(name="admin").first()
+if not admin_exists:
+    admin = User(name="admin", password="admin")
+    admin.roles.append(Role.query.filter_by(name="ADMIN").first()
+    db.session.add(admin)
+    db.sessino.commit()
