@@ -13,3 +13,5 @@
 	</form>
 </div>
 {% endif %}
+<hr class="my-2">
+<b><a href="{{ url_for('posts_thread', post_id = post.id) }}">{{ post.reply_count() | pluralize("vastaus","vastausta") }}</a></b>
