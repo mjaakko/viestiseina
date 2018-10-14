@@ -134,7 +134,7 @@ if not exists:
 admin_exists = User.query.filter_by(name="admin").first()
 if not admin_exists:
     admin = User(name="admin", password="admin")
-    admin.roles.append(Role.query.filter_by(name="ADMIN")).first()
+    admin.roles.append(Role.query.filter_by(name="ADMIN").first())
 
     db.session.add(admin)
     db.session.commit()
