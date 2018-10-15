@@ -3,6 +3,8 @@ from application import db
 from sqlalchemy.sql import text, desc
 from sqlalchemy.orm import backref
 
+from datetime import datetime, timedelta
+
 association_table = db.Table('post_hashtag', db.Model.metadata,
     db.Column('post_id', db.Integer, db.ForeignKey('post.id')),
     db.Column('hashtag_id', db.Integer, db.ForeignKey('hashtag.id'))
@@ -72,6 +74,18 @@ class Hashtag(db.Model):
 	@staticmethod
 	def get_total_hashtag_counts():
 		stmt = text("SELECT hashtag.id, hashtag.name, COUNT(hashtag.id) FROM hashtag, post_hashtag, post WHERE hashtag.id = post_hashtag.hashtag_id AND post_hashtag.post_id = post.id GROUP BY hashtag.id ORDER BY COUNT(hashtag.id) DESC")
+		res = db.engine.execute(stmt)
+		
+		response = []
+		for row in res:
+			response.append({"id": row[0], "name": row[1], "count": row[2]})
+
+		return response
+
+	@staticmethod
+	def get_trending_hashtags(days, count):
+		time = datetime.now() - timedelta(days=days)
+		stmt = text("SELECT hashtag.id, hashtag.name, COUNT(hashtag.id) FROM hashtag, post_hashtag, post WHERE hashtag.id = post_hashtag.hashtag_id AND post_hashtag.post_id = post.id AND post.create_time >= :time GROUP BY hashtag.id ORDER BY COUNT(hashtag.id) DESC LIMIT :count").params(time = time.strftime('%Y-%m-%d %H:%M:%S'), count = count)
 		res = db.engine.execute(stmt)
 		
 		response = []
