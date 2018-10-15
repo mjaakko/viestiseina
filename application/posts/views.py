@@ -71,7 +71,7 @@ def posts_update(post_id):
     if not (post.user_id is current_user.id or current_user.has_role("MODERATOR")):
         return login_manager.unauthorized()
 
-    post.content = form.content.data
+    post.set_content(form.content.data)
 
     db.session().commit()
 
