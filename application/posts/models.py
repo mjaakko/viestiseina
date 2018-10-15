@@ -25,9 +25,12 @@ class Post(db.Model):
 
 	def __init__(self, user_id, content, reply_to):
 		self.user_id = user_id
-		self.content = content
-		self.hashtags = list(map(lambda hashtag: Hashtag.get_or_create(name=hashtag), filter(lambda word: word.startswith("#") and len(word) <= 40, content.split())))
+		self.set_content(content)
 		self.parent_id = reply_to
+
+	def set_content(self, content):
+		self.content = content
+		self.hashtags = list(map(lambda hashtag: Hashtag.get_or_create(name=hashtag), set(filter(lambda word: word.startswith("#") and len(word) <= 40, content.split()))))
 
 	# Finds the first post in the thread
 	def find_top(self):
