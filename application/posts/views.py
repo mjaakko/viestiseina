@@ -7,7 +7,7 @@ import ast
 
 @app.route("/posts", methods=["GET"])
 def posts_index():
-    return render_template("posts/list.html", posts = Post.query.filter_by(parent_id=None).order_by(Post.create_time.desc()).all(), form = PostForm(), show = False)
+    return render_template("posts/list.html", posts = Post.query.filter_by(parent_id=None).order_by(Post.create_time.desc()).all(), hashtags = Hashtag.get_trending_hashtags(1, 5), form = PostForm(), show = False)
 
 @app.route("/posts/", methods=["POST"])
 @login_required
@@ -15,7 +15,7 @@ def posts_create():
     form = PostForm(request.form)
 
     if not form.validate():
-        return render_template("posts/list.html", posts = Post.query.filter_by(parent_id=None).order_by(Post.create_time.desc()).all(), form = form, show = True)
+        return render_template("posts/list.html", posts = Post.query.filter_by(parent_id=None).order_by(Post.create_time.desc()).all(), hashtags = Hashtag.get_trending_hashtags(1, 5), form = form, show = True)
 
     post = Post(current_user.id, form.content.data, None)
   

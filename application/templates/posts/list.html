@@ -1,6 +1,15 @@
 {% extends "layout.html" %}
 
 {% block body %}
+	{% if hashtags %}
+	<p>Päivän suosituimmat hashtagit:</p>
+	<ul class="list-inline ml-2">
+		{% for hashtag in hashtags %}
+		<li class="list-inline-item"><b><a href="{{ url_for('hashtag_view', hashtag_id = hashtag.id) }}">{{ hashtag.name }}</a></b></li>
+		{% endfor %}
+	</ul>
+	<hr class="mt-2 mb-4">
+	{% endif %}
 	{% if current_user.is_authenticated %}
 	<div>
 		<p>
