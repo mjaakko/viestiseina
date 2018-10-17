@@ -98,3 +98,8 @@ def remove_user(user_id):
 
     return redirect(url_for("posts_index"))
 
+@app.route("/users")
+def users_index():
+    users = User.query.all()
+    return render_template("auth/list.html", users = users)
+
