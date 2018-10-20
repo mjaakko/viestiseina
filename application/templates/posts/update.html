@@ -2,15 +2,8 @@
   
 {% block body %}
 <form method="POST" action="{{ url_for('posts_update', post_id=post_id, redirect_thread = redirect_thread) }}">
-	{{ form.content.label }}
-	<br/>
-	{{ form.content }}
-	<br>
-	<ul>
-	{% for error in form.content.errors %}
-		<li>{{ error }}</li>
-	{% endfor %}
-	</ul>
-	<input type="submit" value="Päivitä viesti"/>
+	{{ form.hidden_tag() }}
+	{{ wtf.form_field(form.content) }}
+	<input class="btn btn-secondary btn-sm" type="submit" value="Päivitä viesti"/>
 </form>
 {% endblock %}
