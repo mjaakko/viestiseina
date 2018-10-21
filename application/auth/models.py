@@ -49,7 +49,7 @@ class User(db.Model):
 		stmt = text("SELECT AVG(LENGTH(post.content)) FROM post WHERE post.user_id = :user_id").params(user_id = self.id)
 		res = db.engine.execute(stmt)
 
-		return int(round(res.fetchone()[0]))
+		return int(round(res.fetchone()[0] or 0))
 
 class Role(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
