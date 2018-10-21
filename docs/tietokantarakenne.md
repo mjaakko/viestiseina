@@ -1,3 +1,7 @@
+## Tietokantakaavio
+
+![Tietokantakaavio](tietokantakaavio.png)
+
 ## CREATE TABLE -lauseet
 
 ```
