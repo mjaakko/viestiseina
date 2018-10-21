@@ -11,6 +11,8 @@ viesteihin.
 
 ## Dokumentaatio
 
+* [Yleinen dokumentaatio](docs/yleinen.md)
+  * Sovelluksen rajoitteet ja puutteet, omat kokemukset
 * [Asennusohje](docs/asennusohje.md)
 * [Käyttöohje](docs/kayttoohje.md)
 * [Tietokannan rakenne](docs/tietokantarakenne.md)
