@@ -10,7 +10,7 @@
 * ...haluan selata viestejä
   * `SELECT post.id AS post_id, post.parent_id AS post_parent_id, post.create_time AS post_create_time, post.modify_time AS post_modify_time, post.user_id AS post_user_id, post.content AS post_content FROM post WHERE post.parent_id IS NULL ORDER BY post.create_time DESC`
 * ...haluan hakea viestejä
-  * `SELECT post.id AS post_id, post.parent_id AS post_parent_id, post.create_time AS post_create_time, post.modify_time AS post_modify_time, post.user_id AS post_user_id, post.content AS post_content FROM post JOIN account ON account.id = post.user_id WHERE (post.content LIKE "viesti") AND account.name = "demo" ORDER BY post.create_time DESC`
+  * `SELECT post.id AS post_id, post.parent_id AS post_parent_id, post.create_time AS post_create_time, post.modify_time AS post_modify_time, post.user_id AS post_user_id, post.content AS post_content FROM post JOIN account ON account.id = post.user_id WHERE (post.content LIKE "%viesti%") AND account.name = "demo" ORDER BY post.create_time DESC`
 
 ### Kirjautuneena käyttäjänä
 
