@@ -11,8 +11,8 @@ class User(db.Model):
 	__tablename__ = "account"
 
 	id = db.Column(db.Integer, primary_key=True)
-	name = db.Column(db.String(20), nullable=False)
-	password = db.Column(db.String(50), nullable=False)
+	name = db.Column(db.String(20), nullable=False, index=True)
+	password = db.Column(db.String(50), nullable=False, index=True)
 	posts = db.relationship("Post", backref="user", lazy=True, cascade="all, delete-orphan", order_by= lambda: desc(Post.create_time))
 	roles = db.relationship("Role", secondary=association_table, back_populates="users")
 
