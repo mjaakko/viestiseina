@@ -9,7 +9,9 @@ viesteihin.
   * Testikäyttäjä: **demo**, salasana: **demo**
   * Testikäyttäjä ylläpitäjän oikeuksin: **admin**, salasana: **admin**
 
+## Dokumentaatio
+
 * [Asennusohje](docs/asennusohje.md)
 * [Käyttöohje](docs/kayttoohje.md)
-* [Tietokantakaavio](docs/tietokantakaavio.png)
+* [Tietokannan rakenne](docs/tietokantarakenne.md)
 * [Käyttötapaukset](docs/kayttotapaukset.md)
