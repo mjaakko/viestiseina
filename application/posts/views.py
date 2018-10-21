@@ -2,8 +2,25 @@ from application import app, db, login_manager
 from flask import redirect, render_template, request, url_for
 from flask_login import current_user, login_required 
 from application.posts.models import Post, Hashtag
-from application.posts.forms import PostForm
+from application.auth.models import User
+from application.posts.forms import PostForm, SearchForm
 import ast
+
+@app.route("/posts/search", methods = ["GET","POST"])
+def posts_search():
+    if request.method == "GET":
+    	return render_template("posts/search.html", form = SearchForm())
+
+    form = SearchForm(request.form)
+    if not form.validate():
+        return render_template("posts/search.html", form = form)
+
+    if form.user.data:
+        posts = Post.query.filter(Post.content.contains(form.content.data)).join(Post.user).filter(User.name == form.user.data).order_by(Post.create_time.desc()).all()
+        return render_template("posts/search.html", form = form, posts = posts)
+    else:
+        posts = Post.query.filter(Post.content.contains(form.content.data)).order_by(Post.create_time.desc()).all()
+        return render_template("posts/search.html", form = form, posts = posts)
 
 @app.route("/posts", methods=["GET"])
 def posts_index():

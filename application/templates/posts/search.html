@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+
+{% block body %}
+	<form class="form" method="POST" action="{{ url_for('posts_search') }}">
+		{{ form.hidden_tag() }}
+		{{ wtf.form_field(form.content) }}
+		{{ wtf.form_field(form.user) }}
+		<input class="btn btn-secondary btn-sm" type="submit" value="Hae viestejä"/>
+	</form>
+	{% if posts %}
+	<hr class="my-2"/>
+	<ul class="list-unstyled">
+		{% for post in posts %}
+		<li class="media mb-4">
+			<div class="media-body border bg-light p-1">
+				{% include 'posts/post.html' %}
+			</div>
+		</li>		
+		{% endfor %}
+	</ul>
+	{% elif request.method == "POST" %}
+	<hr class="my-2"/>	
+	<p class="text-center">Ei tuloksia</p>
+	{% endif %}
+{% endblock %}
