@@ -5,7 +5,7 @@
 
 ```
 python3 -m venv venv
-source venc/bin/activate
+source venv/bin/activate
 ```
 3. Asenna sovelluksen riippuvuudet
 ```
