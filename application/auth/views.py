@@ -1,9 +1,9 @@
 from flask import render_template, request, redirect, url_for
-from flask_login import login_user, logout_user, login_required
+from flask_login import current_user, login_user, logout_user, login_required
 
 from application import app, db, requires_role
 from application.auth.models import User, Role
-from application.auth.forms import LoginForm
+from application.auth.forms import ChangePasswordForm, LoginForm
 
 @app.route("/auth/login", methods = ["GET", "POST"])
 def auth_login():
@@ -55,6 +55,27 @@ def auth_register():
 
     return redirect(url_for("index"))    
 
+@app.route("/auth/change_password", methods = ["GET","POST"])
+@login_required
+def auth_password_change():
+    if request.method == "GET":
+    	return render_template("auth/change_password_form.html", form = ChangePasswordForm())
+
+    form = ChangePasswordForm(request.form)
+    if not form.validate():
+        return render_template("auth/change_password_form.html", form = form)
+
+    if current_user.password == form.password_current.data:
+        current_user.password = form.password_new.data
+
+        db.session.add(current_user)
+        db.session.commit()
+
+        return redirect(url_for("user_view", user_id = current_user.id))
+    else:
+        return render_template("auth/change_password_form.html", form = form,
+                               error = "Nykyinen salasana ei ole oikein")
+       
 @app.route("/user/<user_id>")
 def user_view(user_id):
     user = User.query.filter_by(id = user_id).first()
