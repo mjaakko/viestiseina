@@ -22,6 +22,9 @@ Käyttäjätunnuksen nimi täytyy olla vapaana, jotta rekisteröinti onnistuu
 4. Kirjoita viestin sisältö
 5. Paina "Lähetä viesti"
 
+Viestiin voi lisätä hashtageja laittamalla #-merkin sanan alkuun. Hashtagit voivat olla 
+korkeintaan 40 merkkiä pitkiä.
+
 ### Viestiketjun selaaminen
 
 1. Valitse yläpalkista "Viestit"
