@@ -63,4 +63,6 @@ CREATE TABLE post_hashtag (
 )
 ```
 
+## Indeksoinnit
 
+`Account` -taulussa on indeksoinnit `name` ja `password` kentille.
