@@ -23,9 +23,8 @@
 * ...haluan vastata viesteihin
   * `INSERT INTO post (parent_id, create_time, modify_time, user_id, content) VALUES (1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 1, "vastaus")`
   * Viestin vastauksien määrä selviää kyselyllä:  
-  ```
-  WITH RECURSIVE replies AS (SELECT id, parent_id, id as root_id FROM post WHERE root_id IS :post_id UNION ALL SELECT c.id, c.parent_id, p.root_id FROM post c JOIN replies p ON 
-c.parent_id = p.id) SELECT root_id AS post_id, count(*) AS reply_count FROM replies WHERE id <> root_id
+  ``` 
+  WITH RECURSIVE replies AS (SELECT id, parent_id, id as root_id FROM post WHERE root_id IS :post_id UNION ALL SELECT c.id, c.parent_id, p.root_id FROM post c JOIN replies p ON c.parent_id = p.id) SELECT root_id AS post_id, count(*) AS reply_count FROM replies WHERE id <> root_id
   ```
 * ...haluan selata suositumpia hashtageja
   * `SELECT hashtag.id, hashtag.name, COUNT(hashtag.id) FROM hashtag, post_hashtag, post WHERE hashtag.id = post_hashtag.hashtag_id AND post_hashtag.post_id = post.id GROUP BY hashtag.id ORDER BY COUNT(hashtag.id) DESC`
