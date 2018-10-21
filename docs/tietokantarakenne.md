@@ -66,3 +66,11 @@ CREATE TABLE post_hashtag (
 ## Indeksoinnit
 
 `Account` -taulussa on indeksoinnit `name` ja `password` kentille.
+
+## Normalisointi
+
+Tietokanta on normalisoitu, sillä kaikki sen taulut ovat kolmannessa normaalimuodossa. Mitkään 
+sarakkeet eivät ole listoja ja sarakkeiden arvot ovat samaa tyyppiä. Tietokantaan ei tallenneta 
+samanlaisia rivejä eikä sarakkeiden tai rivien järjestys vaikuta tietokannan toimintaan. 
+Jokaisessa taulussa on vain yksi pääavain ja kaikkien muiden sarakkeiden arvot ovat 
+funktionaalisesti riippuvaisia vain tästä pääavaimesta.
