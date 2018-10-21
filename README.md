@@ -10,5 +10,6 @@ viesteihin.
   * Testikäyttäjä ylläpitäjän oikeuksin: **admin**, salasana: **admin**
 
 * [Asennusohje](docs/asennusohje.md)
+* [Käyttöohje](docs/kayttoohje.md)
 * [Tietokantakaavio](docs/tietokantakaavio.png)
 * [Käyttötapaukset](docs/kayttotapaukset.md)
