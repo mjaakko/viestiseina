@@ -5,6 +5,8 @@ from application import app, db, requires_role
 from application.auth.models import User, Role
 from application.auth.forms import ChangePasswordForm, LoginForm
 
+import ast
+
 @app.route("/auth/login", methods = ["GET", "POST"])
 def auth_login():
     if request.method == "GET":
@@ -71,7 +73,7 @@ def auth_password_change():
         db.session.add(current_user)
         db.session.commit()
 
-        return redirect(url_for("user_view", user_id = current_user.id))
+        return redirect(url_for("user_view", user_id = current_user.id, password_changed = True))
     else:
         return render_template("auth/change_password_form.html", form = form,
                                error = "Nykyinen salasana ei ole oikein")
@@ -79,7 +81,7 @@ def auth_password_change():
 @app.route("/user/<user_id>")
 def user_view(user_id):
     user = User.query.filter_by(id = user_id).first()
-    return render_template("auth/user.html", user = user)
+    return render_template("auth/user.html", user = user, password_changed = ast.literal_eval(request.args.get("password_changed", "False")))
 
 @app.route("/user/<user_id>/give_mod_role")
 @login_required

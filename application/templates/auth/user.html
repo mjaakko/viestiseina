@@ -1,6 +1,12 @@
 {% extends "layout.html" %}
 
 {% block body %}
+	{% if password_changed %}
+	<div class="alert alert-success" role="alert">
+		Salasana vaihdettu
+	</div>
+	{% endif %}
+
 	<h1>{{ user.name }} {% if user.has_role("ADMIN") %}<small><span class="badge badge-info badge-pill float-right ml-2 mt-2">Ylläpitäjä</span></small>{% endif %}{% if user.has_role("MODERATOR") %}<small><span class="badge badge-info badge-pill float-right mt-2">Moderaattori</span></small>{% endif %}</h1>
 	<ul>
 		<li>{{ user.get_post_count() }}	lähetettyä viestiä</li>
