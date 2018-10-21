@@ -46,7 +46,7 @@ class User(db.Model):
 		return res.fetchone()[0]
 
 	def get_average_post_length(self):
-		stmt = text("SELECT AVG(LENGTH((post.content)) FROM post WHERE post.user_id = :user_id").params(user_id = self.id)
+		stmt = text("SELECT AVG(LENGTH(post.content)) FROM post WHERE post.user_id = :user_id").params(user_id = self.id)
 		res = db.engine.execute(stmt)
 
 		return res.fetchone()[0]
