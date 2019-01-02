@@ -17,3 +17,7 @@ viesteihin.
 * [Käyttöohje](docs/kayttoohje.md)
 * [Tietokannan rakenne](docs/tietokantarakenne.md)
 * [Käyttötapaukset](docs/kayttotapaukset.md)
+
+## Käyttö Dockerilla
+
+`docker run -d -p 8000:8000 mjaakko/viestiseina`
